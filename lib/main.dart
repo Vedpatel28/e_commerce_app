@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: AllScreens.detail,
-          page: () => const DetailPage(),
+          page: () => DetailPage(),
         ),
       ],
     );
