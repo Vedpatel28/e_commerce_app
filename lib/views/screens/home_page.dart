@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce_app/controller/cart_controller.dart';
 import 'package:e_commerce_app/controller/sorting_controller.dart';
 import 'package:e_commerce_app/helper/api_helper.dart';
@@ -198,7 +200,7 @@ class HomePage extends StatelessWidget {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(6),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
@@ -245,6 +247,7 @@ class HomePage extends StatelessWidget {
                         },
                       );
                     } else if (snapShot.hasError) {
+                      log("${snapShot.error}");
                       return Text("${snapShot.error}");
                     } else {
                       return Center(
