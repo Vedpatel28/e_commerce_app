@@ -15,23 +15,17 @@ class ShortingController extends GetxController {
   }
 
   aTozSorting() async {
-    List<ProductModel>? allProduct = await Api_Helper.api_Helper.getApi();
 
-    allProduct?.sort(
-      (a, b) => a.title.toLowerCase().compareTo(
-            b.title.toLowerCase(),
-          ),
-    );
+    products.sort(
+        (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
 
-    log("$allProduct");
+    log("$products");
 
     update();
   }
 
   zToaSorting() async {
-    List<ProductModel>? allProduct = await Api_Helper.api_Helper.getApi();
-
-    allProduct?.sort(
+    products.sort(
       (a, b) => b.title.toLowerCase().compareTo(
             a.title.toLowerCase(),
           ),
