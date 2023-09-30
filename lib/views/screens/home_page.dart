@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/controller/cart_controller.dart';
+import 'package:e_commerce_app/controller/sorting_controller.dart';
 import 'package:e_commerce_app/helper/api_helper.dart';
 import 'package:e_commerce_app/modals/product_modal.dart';
 import 'package:e_commerce_app/utils/get_page_utils.dart';
@@ -16,6 +17,8 @@ class HomePage extends StatelessWidget {
     CartController cartController = Get.put(
       CartController(),
     );
+
+    ShortingController shortingController = Get.put(ShortingController());
 
     return Scaffold(
       appBar: AppBar(
@@ -38,37 +41,47 @@ class HomePage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      Container(
-                        height: s.height * 0.08,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.only(
-                          left: 18,
-                          right: 18,
-                        ),
-                        color: Colors.white,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "A to Z",
-                          style: GoogleFonts.comme(
-                            fontSize: s.height * 0.02,
-                            fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          shortingController.aTozSorting();
+                        },
+                        child: Container(
+                          height: s.height * 0.08,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                          ),
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "A to Z",
+                            style: GoogleFonts.comme(
+                              fontSize: s.height * 0.02,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: s.height * 0.08,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.only(
-                          left: 18,
-                          right: 18,
-                        ),
-                        color: Colors.white,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Z to A",
-                          style: GoogleFonts.comme(
-                            fontSize: s.height * 0.02,
-                            fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          shortingController.zToaSorting();
+                        },
+                        child: Container(
+                          height: s.height * 0.08,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                          ),
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Z to A",
+                            style: GoogleFonts.comme(
+                              fontSize: s.height * 0.02,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
@@ -131,95 +144,103 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: s.height * 0.9,
                 child: FutureBuilder(
-                  future: Api_Helper.api_Helper.getApi(),
+                  future: shortingController.fetchAllProduct(),
                   builder: (context, snapShot) {
                     if (snapShot.hasData) {
-                      return GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 2 / 3,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: snapShot.data!.length,
-                        itemBuilder: (context, index) {
-                          ProductModel product = snapShot.data![index];
-                          return GestureDetector(
-                            onTap: () {
-                              Get.toNamed(
-                                AllScreens.detail,
-                                arguments: product,
-                              );
-                            },
-                            child: Card(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 120,
-                                    decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.elliptical(120, 40),
-                                        bottomRight: Radius.elliptical(40, 120),
-                                      ),
-                                      image: DecorationImage(
-                                        image: NetworkImage(product.thumbnail),
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.all(12),
-                                    height: 50,
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      product.title,
-                                      style: GoogleFonts.comme(
-                                        fontSize: s.height * 0.018,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          height: 50,
-                                          alignment: Alignment.center,
-                                          child: Text("\$ ${product.price}"),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            if (cartController.cartItems
-                                                .contains(product)) {
-                                              Get.snackbar(
-                                                product.title,
-                                                "Already added",
-                                              );
-                                              Get.toNamed(AllScreens.cart);
-                                            } else {
-                                              cartController.addProduct(
-                                                product: product,
-                                              );
-                                              Get.snackbar(
-                                                product.title,
-                                                "add In Cart",
-                                              );
-                                              Get.toNamed(AllScreens.cart);
-                                            }
-                                          },
-                                          icon: const Icon(
-                                            Icons.shopping_bag_outlined,
+                      return Obx(
+                        () {
+                          return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 2 / 3,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            ),
+                            itemCount: snapShot.data!.length,
+                            itemBuilder: (context, index) {
+                              ProductModel product = snapShot.data![index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    AllScreens.detail,
+                                    arguments: product,
+                                  );
+                                },
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 120,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft:
+                                                Radius.elliptical(120, 40),
+                                            bottomRight:
+                                                Radius.elliptical(40, 120),
+                                          ),
+                                          image: DecorationImage(
+                                            image:
+                                                NetworkImage(product.thumbnail),
+                                            fit: BoxFit.fill,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.all(12),
+                                        height: 50,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          product.title,
+                                          style: GoogleFonts.comme(
+                                            fontSize: s.height * 0.018,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              alignment: Alignment.center,
+                                              child:
+                                                  Text("\$ ${product.price}"),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                if (cartController.cartItems
+                                                    .contains(product)) {
+                                                  Get.snackbar(
+                                                    product.title,
+                                                    "Already added",
+                                                  );
+                                                  Get.toNamed(AllScreens.cart);
+                                                } else {
+                                                  cartController.addProduct(
+                                                    product: product,
+                                                  );
+                                                  Get.snackbar(
+                                                    product.title,
+                                                    "add In Cart",
+                                                  );
+                                                  Get.toNamed(AllScreens.cart);
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.shopping_bag_outlined,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           );
                         },
                       );
