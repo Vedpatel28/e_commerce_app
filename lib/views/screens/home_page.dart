@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:e_commerce_app/controller/cart_controller.dart';
 import 'package:e_commerce_app/controller/sorting_controller.dart';
-import 'package:e_commerce_app/helper/api_helper.dart';
 import 'package:e_commerce_app/modals/product_modal.dart';
 import 'package:e_commerce_app/utils/get_page_utils.dart';
 import 'package:flutter/material.dart';
@@ -87,54 +86,69 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        height: s.height * 0.08,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.only(
-                          left: 18,
-                          right: 18,
-                        ),
-                        color: Colors.white,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "by Rating",
-                          style: GoogleFonts.comme(
-                            fontSize: s.height * 0.02,
-                            fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          shortingController.sortByRating();
+                        },
+                        child: Container(
+                          height: s.height * 0.08,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                          ),
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "by Rating",
+                            style: GoogleFonts.comme(
+                              fontSize: s.height * 0.02,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: s.height * 0.08,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.only(
-                          left: 18,
-                          right: 18,
-                        ),
-                        color: Colors.white,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Price High to Low",
-                          style: GoogleFonts.comme(
-                            fontSize: s.height * 0.02,
-                            fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          shortingController.hTolSortPrice();
+                        },
+                        child: Container(
+                          height: s.height * 0.08,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                          ),
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Price High to Low",
+                            style: GoogleFonts.comme(
+                              fontSize: s.height * 0.02,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: s.height * 0.08,
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.only(
-                          left: 18,
-                          right: 18,
-                        ),
-                        color: Colors.white,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Price Low to High",
-                          style: GoogleFonts.comme(
-                            fontSize: s.height * 0.02,
-                            fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          shortingController.lTohSortPrice();
+                        },
+                        child: Container(
+                          height: s.height * 0.08,
+                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.only(
+                            left: 18,
+                            right: 18,
+                          ),
+                          color: Colors.white,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Price Low to High",
+                            style: GoogleFonts.comme(
+                              fontSize: s.height * 0.02,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
